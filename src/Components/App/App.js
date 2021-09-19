@@ -16,6 +16,21 @@ export class App extends Component {
     filter: "",
   };
 
+  componentDidUpdate(prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidMount() {
+    const storageContacts = localStorage.getItem("contacts");
+    const parsedContacts = JSON.parse(storageContacts);
+
+    if (parsedContacts) {
+      this.setState({ storageContacts: parsedContacts });
+    }
+  }
+
   handleFilter = (text) => {
     this.setState({ filter: text });
   };
