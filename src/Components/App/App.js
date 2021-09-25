@@ -4,6 +4,7 @@ import { PrimaryTitle, SecondaryTitle } from "./App.styled.jsx";
 import { ContactsForm } from "../ContactsForm/ContactsForm.jsx";
 import { ContactsList } from "../ContactsList/ContactsList.jsx";
 import { Filter } from "../Filter/Filter.jsx";
+import toast, { Toaster } from "react-hot-toast";
 
 export class App extends Component {
   state = {
@@ -39,8 +40,16 @@ export class App extends Component {
     const { contacts } = this.state;
     const newContact = { id: uuidv4(), name, number };
 
-    contacts.some((contact) => contact.name === newContact.name)
-      ? alert(`${newContact.name} is already in contacts`)
+    contacts.some((contact) => contact.name.toLowerCase() === newContact.name)
+      ? toast(`${newContact.name} is already in contacts`, {
+          icon: "👏",
+          style: {
+            borderRadius: "10px",
+            background: "#333",
+            color: "#fff",
+            duration: 4000,
+          },
+        })
       : this.setState({
           contacts: [newContact, ...contacts],
         });
@@ -72,6 +81,7 @@ export class App extends Component {
         <SecondaryTitle>Contacts</SecondaryTitle>
         <Filter onChange={handleFilter} value={state.filter} />
         <ContactsList contacts={showContacts()} deleteId={removeContact} />
+        <Toaster />
       </>
     );
   }
