@@ -18,7 +18,7 @@ export class App extends Component {
   };
 
   componentDidUpdate(prevState) {
-    if (this.state.contacts !== prevState.contacts) {
+    if (prevState.contacts !== this.state.contacts) {
       localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
     }
   }
@@ -28,7 +28,7 @@ export class App extends Component {
     const parsedContacts = JSON.parse(storageContacts);
 
     if (parsedContacts) {
-      this.setState({ storageContacts: parsedContacts });
+      this.setState({ contacts: parsedContacts });
     }
   }
 
@@ -40,7 +40,9 @@ export class App extends Component {
     const { contacts } = this.state;
     const newContact = { id: uuidv4(), name, number };
 
-    contacts.some((contact) => contact.name.toLowerCase() === newContact.name)
+    contacts.some(
+      (contact) => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    )
       ? toast(`${newContact.name} is already in contacts`, {
           icon: "👏",
           style: {
